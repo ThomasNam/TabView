@@ -22,6 +22,9 @@
                     <Button Text="Change tab header text font family" Clicked="Button_ChangeTabTextFontFamily" HorizontalOptions="Start"/>
                     <Button Text="Change tab header text font attributes" Clicked="Button_ChangeTabTextFontAttributes" HorizontalOptions="Start"/>
                     <Button Text="Go to Xaml sample page" Clicked="GoToXamlSample" HorizontalOptions="Start" />
+
+	                <Button Text="Change header location" Clicked="Button_ChangeHeaderLocation" HorizontalOptions="Start"/>
+	                
                 </StackLayout>
             </ScrollView>
         </StackLayout>

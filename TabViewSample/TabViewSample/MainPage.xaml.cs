@@ -21,7 +21,9 @@ namespace TabViewSample
                 new TabItem("Tab 2", new Label{Text = "Tab 2", HorizontalOptions = LayoutOptions.FillAndExpand, VerticalOptions = LayoutOptions.FillAndExpand, BackgroundColor = Color.Green}),
                 new TabItem("Tab 3", new Label{Text = "Tab 3", HorizontalOptions = LayoutOptions.FillAndExpand, VerticalOptions = LayoutOptions.FillAndExpand, BackgroundColor = Color.Blue}),
             });
-            tabView.VerticalOptions = LayoutOptions.FillAndExpand;
+	        //tabView.HeaderTop = false;
+
+			tabView.VerticalOptions = LayoutOptions.FillAndExpand;
             theSl.Children.Add(tabView);
 
             tabView.PositionChanged += TabView_PositionChanged;
@@ -108,5 +110,11 @@ namespace TabViewSample
         {
             await Navigation.PushAsync(new XamlSamplePage());
         }
+
+	    private void Button_ChangeHeaderLocation(object sender, EventArgs e)
+	    {
+		    tabView.HeaderTop = !tabView.HeaderTop;
+
+	    }
     }
 }

@@ -37,8 +37,7 @@ namespace Xam.Plugin.TabView
         private StackLayout _mainContainerSL;
         private Grid _headerContainerGrid;
         private CarouselViewControl _carouselView;
-
-
+		
         public event PositionChangingEventHandler PositionChanging;
         public event PositionChangedEventHandler PositionChanged;
 
@@ -62,7 +61,7 @@ namespace Xam.Plugin.TabView
 
         public TabViewControl(IList<TabItem> tabItems, int selectedTabIndex = 0)
         {
-            Init();
+			Init ();
             foreach (var tab in tabItems)
             {
                 ItemSource.Add(tab);
@@ -155,7 +154,7 @@ namespace Xam.Plugin.TabView
                 BindingContext = this
             };
 
-            _mainContainerSL = new StackLayout
+	        _mainContainerSL = new StackLayout
             {
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
@@ -163,7 +162,7 @@ namespace Xam.Plugin.TabView
                 Spacing = 0
             };
 
-            Content = _mainContainerSL;
+	        Content = _mainContainerSL;
             ItemSource.CollectionChanged += ItemSource_CollectionChanged;
             SetPosition(SelectedTabIndex, true);
         }
@@ -466,10 +465,40 @@ namespace Xam.Plugin.TabView
             get => (GridLength)GetValue(TabSizeOptionProperty);
             set { SetValue(TabSizeOptionProperty, value); }
         }
-        #endregion
+		#endregion
 
-        #region SelectedTabIndex
-        public static readonly BindableProperty SelectedTabIndexProperty = BindableProperty.Create(nameof(SelectedTabIndex), typeof(int), typeof(TabViewControl), 0, propertyChanged: OnSelectedTabIndexChanged);
+
+		#region HeaderTop
+	    public bool HeaderTop
+	    {
+		    get { return (bool)GetValue (HeaderTopProperty); }
+		    set { SetValue (HeaderTopProperty, value); }
+	    }
+	    private static void HeaderTopChanged (BindableObject bindable, object oldValue, object newValue)
+	    {
+		    if (bindable is TabViewControl tabViewControl)
+		    {
+			    tabViewControl._mainContainerSL.Children.Clear();
+
+				if ((bool)newValue)
+			    {
+				    tabViewControl._mainContainerSL.Children.Add (tabViewControl._headerContainerGrid);
+				    tabViewControl._mainContainerSL.Children.Add (tabViewControl._carouselView);
+			    }
+			    else
+			    {
+				    tabViewControl._mainContainerSL.Children.Add (tabViewControl._carouselView);
+				    tabViewControl._mainContainerSL.Children.Add (tabViewControl._headerContainerGrid);
+			    }
+			}
+	    }
+	    public static readonly BindableProperty HeaderTopProperty = BindableProperty.Create (nameof (HeaderTop), typeof (bool), typeof (TabViewControl), true, BindingMode.Default, null, HeaderTopChanged);
+	    #endregion
+
+
+
+		#region SelectedTabIndex
+		public static readonly BindableProperty SelectedTabIndexProperty = BindableProperty.Create(nameof(SelectedTabIndex), typeof(int), typeof(TabViewControl), 0, propertyChanged: OnSelectedTabIndexChanged);
         private static void OnSelectedTabIndexChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is TabViewControl tabViewControl && tabViewControl.ItemSource != null &&
